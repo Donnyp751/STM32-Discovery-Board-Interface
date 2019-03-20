@@ -12,9 +12,18 @@ namespace Control_Panel
 {
     class Connection : INotifyPropertyChanged
     {
+        private enum connectionStatusEnum
+        {
+            Disconnected,
+            Connected,
+            Error
+        }
+        connectionStatusEnum connectionStatus;
+
         private string _connectionStatus;
         private ObservableCollection<string> comPorts;
         public event PropertyChangedEventHandler PropertyChanged;
+        
 
         public string ConnectionStatus
         {
@@ -30,6 +39,30 @@ namespace Control_Panel
                     
             }
         }
+
+        private connectionStatusEnum _ConnectionStatus
+        {
+            get { return connectionStatus; }
+            set
+            {
+                connectionStatus = value;
+                switch (value)
+                {
+                    case connectionStatusEnum.Connected:
+                        ConnectionStatus = "Connected";
+                        break;
+
+                    case connectionStatusEnum.Disconnected:
+                        ConnectionStatus = "Disconnected";
+                        break;
+
+                    case connectionStatusEnum.Error:
+                        ConnectionStatus = "Error";
+                        break;
+                }
+            }
+        }
+        
 
         public ObservableCollection<string> ComPorts
         {
