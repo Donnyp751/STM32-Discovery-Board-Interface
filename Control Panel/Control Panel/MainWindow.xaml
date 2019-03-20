@@ -1,0 +1,132 @@
+﻿<Window x:Class="Control_Panel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Control_Panel"
+        mc:Ignorable="d"
+        Title="Discovery Board Control Panel" Height="400" Width="400" Background="#FF616161">
+    <Window.Resources>
+        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+        <Style x:Key="EntryBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="#FFC5C5C5"/>
+            <Setter Property="BorderBrush" Value="#FF8F0101"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Width" Value="70"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="AllowDrop" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                        <Condition Property="IsSelectionActive" Value="false"/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid>
+
+        <TabControl Background="#FF7E7E7E" BorderBrush="#FF8F0101"  BorderThickness="5">
+            <TabItem x:Name="ConnectionTab" Header="Connection">
+                <Grid>
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" Width="350" Height="70" BorderBrush="#FF8F0101" BorderThickness="5" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox Name="ComPortsComboBox" ItemsSource="{Binding ComPorts}" Margin="10" Width="120" Height="30"/>
+                            <Button Name="ConnectButton" Width="100" Height="30"  Content="Connect" Click="ConnectBtnClick"></Button>
+                            <TextBlock x:Name="ConnectionStatusTextBlock" FontSize="14" Text="{Binding ConnectionStatus}" VerticalAlignment="Center" Margin="9"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Width="350" Height="120" BorderBrush="#FF8F0101" BorderThickness="5" Grid.ColumnSpan="2">
+                        <TextBlock TextWrapping="WrapWithOverflow" FontSize="15" Margin="5">
+                            This is the control panel for the STM32 discovery board USB Data logger. With this application we can connect
+                        </TextBlock>
+                    </Border>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Console">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="31*"/>
+                        <ColumnDefinition Width="275*"/>
+                        <ColumnDefinition Width="72*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Center" FontSize="25" Margin="45,0,104,0" Width="126" Grid.Column="1" Text=" Console"/>
+                    <Border BorderBrush="#FF8F0101" Margin="10,0,0,10" BorderThickness="5" Height="285" Width="250" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
+                        <TextBox Text="This is where the console feedback will be placed" Margin="5"  VerticalScrollBarVisibility="Auto" IsReadOnly="True" Name="ConsoleTb" TextWrapping="WrapWithOverflow" Background="#FFC5C5C5">
+
+                        </TextBox>
+                    </Border>
+
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Width="90" Height="285" BorderBrush="#FF8F0101" BorderThickness="5" Grid.ColumnSpan="2" Grid.Column="1">
+                        <StackPanel>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock HorizontalAlignment="Center" FontSize="20" Margin="234,5,-20,295" Width="133" Text=" Commands" Grid.ColumnSpan="2" Grid.Column="1"/>
+
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="Sensors">
+                <Border HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Width="200" Height="300" BorderBrush="#FF8F0101" BorderThickness="5">
+                    <Grid>
+
+                        <StackPanel HorizontalAlignment="Left">
+
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Right">
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
