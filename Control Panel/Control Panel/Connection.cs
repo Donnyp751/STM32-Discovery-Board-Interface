@@ -23,9 +23,9 @@ namespace Control_Panel
         private string _connectionStatus;
         private ObservableCollection<string> comPorts;
         public event PropertyChangedEventHandler PropertyChanged;
-        
+        private SerialPort serialPort;
 
-        public string ConnectionStatus
+        private string ConnectionStatus
         {
             get => _connectionStatus;
             set
@@ -39,10 +39,9 @@ namespace Control_Panel
                     
             }
         }
-
         private connectionStatusEnum _ConnectionStatus
         {
-            get { return connectionStatus; }
+            get => connectionStatus; 
             set
             {
                 connectionStatus = value;
@@ -62,8 +61,6 @@ namespace Control_Panel
                 }
             }
         }
-        
-
         public ObservableCollection<string> ComPorts
         {
             get => comPorts;
@@ -85,15 +82,65 @@ namespace Control_Panel
         }
         public Connection()
         {
-            ConnectionStatus = "Disconnected";
+            _ConnectionStatus = connectionStatusEnum.Disconnected;
             updateComPorts();
         }
 
+        //Connect returns the value of if the comPort is open. If it is already open it will just return true
+        public bool Connect(string comPort, int baud = 115200)
+        {
+            if (serialPort == null)
+            {
+                serialPort = new SerialPort();
+            }
+            if (!serialPort.IsOpen)
+            {
+                serialPort.BaudRate = baud;
+                serialPort.PortName = comPort;
+                serialPort.Open();
+            }
+            return serialPort.IsOpen;
+        }
+
+        //Disconnect from the serial device
+        public void Disconnect()
+        {
+            serialPort?.Close();
+        }
+
+        public int Write(string cmd)
+        {
+            try
+            {
+                serialPort.Write(cmd);
+            }
+            catch
+            {
+                return 0;
+            }
+
+            return cmd.Length;
+        }
+
+        public string Read()
+        {
+            return serialPort.ReadLine();
+        }
+        public string Read(int timeout)
+        {
+            if(serialPort.ReadTimeout != timeout)
+                serialPort.ReadTimeout = timeout;
+
+            return serialPort.ReadLine();
+        }
+
+        //This will refresh the com ports for the drop down.
         private void updateComPorts()
         {
             ComPorts = new ObservableCollection<string>(SerialPort.GetPortNames());
         }
 
+        //Just a testing method, will remove before release
         public void ChangeConnectionStatus(string connection)
         {
             ConnectionStatus = connection;
