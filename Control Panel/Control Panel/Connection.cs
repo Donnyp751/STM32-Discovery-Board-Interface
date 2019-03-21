@@ -7,11 +7,13 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using System.Timers;
 
 namespace Control_Panel
 {
     class Connection : INotifyPropertyChanged
     {
+        private Timer updateTimer;
         private enum connectionStatusEnum
         {
             Disconnected,
@@ -22,10 +24,12 @@ namespace Control_Panel
 
         private string _connectionStatus;
         private ObservableCollection<string> comPorts;
+        private ObservableCollection<string> consoleOutput;
         public event PropertyChangedEventHandler PropertyChanged;
         private SerialPort serialPort;
 
-        private string ConnectionStatus
+        public bool IsOpen;
+        public string ConnectionStatus
         {
             get => _connectionStatus;
             set
@@ -49,14 +53,17 @@ namespace Control_Panel
                 {
                     case connectionStatusEnum.Connected:
                         ConnectionStatus = "Connected";
+                        IsOpen = true;
                         break;
 
                     case connectionStatusEnum.Disconnected:
                         ConnectionStatus = "Disconnected";
+                        IsOpen = false;
                         break;
 
                     case connectionStatusEnum.Error:
                         ConnectionStatus = "Error";
+                        IsOpen = false;
                         break;
                 }
             }
@@ -76,14 +83,60 @@ namespace Control_Panel
 
         }
 
+        public ObservableCollection<string> ConsoleOutput
+        {
+            get => consoleOutput;
+            set
+            {
+                if (value != null)
+                {
+                    consoleOutput = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         public Connection()
         {
+            updateTimer = new Timer();
+            consoleOutput = new ObservableCollection<string>();
+            updateTimer.Interval = 50;
+            updateTimer.AutoReset = true;
+            updateTimer.Elapsed += TimedUpdate;
+
             _ConnectionStatus = connectionStatusEnum.Disconnected;
             updateComPorts();
+        }
+
+        private void TimedUpdate(object sender, ElapsedEventArgs e)
+        {
+            if (serialPort == null) return;
+
+
+            IsOpen = serialPort.IsOpen;
+            if (serialPort.IsOpen)
+            {
+                _ConnectionStatus = connectionStatusEnum.Connected;
+                string message = "";
+                try
+                {
+                    message = serialPort.ReadLine();
+                }
+                catch
+                {
+
+                }
+
+                if (!string.IsNullOrEmpty(message))
+                    ConsoleOutput?.Add(message);
+            }
+            else
+            {
+                connectionStatus = connectionStatusEnum.Disconnected;
+            }
         }
 
         //Connect returns the value of if the comPort is open. If it is already open it will just return true
@@ -97,15 +150,28 @@ namespace Control_Panel
             {
                 serialPort.BaudRate = baud;
                 serialPort.PortName = comPort;
-                serialPort.Open();
+                try
+                {
+                    serialPort.Open();
+                    updateTimer.Start();
+                }
+                catch
+                {
+                    serialPort?.Close();
+                    _ConnectionStatus = connectionStatusEnum.Error;
+                }
+                
             }
+
             return serialPort.IsOpen;
         }
 
         //Disconnect from the serial device
         public void Disconnect()
         {
-            serialPort?.Close();
+            serialPort.Close();
+            updateTimer.Stop();
+            _ConnectionStatus = connectionStatusEnum.Disconnected;
         }
 
         public int Write(string cmd)

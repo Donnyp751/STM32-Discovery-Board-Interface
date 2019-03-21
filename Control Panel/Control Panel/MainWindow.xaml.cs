@@ -34,7 +34,21 @@ namespace Control_Panel
         
         private void ConnectBtnClick(object sender, RoutedEventArgs e)
         {
-            connection.ChangeConnectionStatus("Connected");
+            string comPort = ComPortsComboBox?.SelectionBoxItem.ToString();
+            
+            if(!connection.IsOpen)
+            {
+                if (!string.IsNullOrEmpty(comPort))
+                {
+                    if (connection.Connect(comPort))
+                        ConnectButton.Content = "Disconnect";
+                }
+            }
+            else
+            {
+                connection.Disconnect();
+                ConnectButton.Content = "Connect";
+            }
         }
     }
 }
