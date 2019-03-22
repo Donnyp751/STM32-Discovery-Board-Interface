@@ -108,24 +108,8 @@
 
             </TabItem>
             <TabItem Header="Sensors">
-                <Border HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10" Width="200" Height="300" BorderBrush="#FF8F0101" BorderThickness="5">
-                    <Grid>
-                        
-                        <StackPanel HorizontalAlignment="Left">
-
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Right">
-                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
-                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
-                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
-                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
-                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
-                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
-                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
-                            <TextBox Style="{DynamicResource EntryBoxStyle}"></TextBox>
-                        </StackPanel>
-                    </Grid>
-                </Border>
+                <local:SensorDataDisplayGrid x:Name="SensorDataDisplayGrid"></local:SensorDataDisplayGrid>
+               
             </TabItem>
         </TabControl>
     </Grid>

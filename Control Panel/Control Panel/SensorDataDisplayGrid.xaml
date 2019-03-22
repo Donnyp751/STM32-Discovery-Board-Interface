@@ -1,0 +1,42 @@
+﻿<Grid x:Class="Control_Panel.SensorDataDisplayGrid"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Control_Panel"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        mc:Ignorable="d"
+        Background="#FF7E7E7E">
+    <Grid>
+        <StackPanel Name="StackPanel">
+            <!--<TextBlock Margin="2" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center">Temperature Graph</TextBlock>-->
+            <Border  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="2" Width="360" Height=" 155" BorderBrush="#FF8F0101" BorderThickness="5">
+                <oxy:Plot Background="#FFC5C5C5" Name="TemperaturePlot" >
+                    <oxy:Plot.Axes>
+                        <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
+                        <oxy:LinearAxis Title="Temp (C)" Position="Left"/>
+                    </oxy:Plot.Axes>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries ItemsSource="{Binding TemperatureData}"/>
+                    </oxy:Plot.Series>
+                </oxy:Plot>
+            </Border>
+
+            <!--<TextBlock Margin="2" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center">Humidity Graph</TextBlock>-->
+            <Border VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="2" Width="360" Height=" 155" BorderBrush="#FF8F0101" BorderThickness="5">
+                <oxy:Plot Background="#FFC5C5C5" Name="HumidityPlot" >
+                    <oxy:Plot.Axes>
+                        <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
+                        <oxy:LinearAxis Title="RH %" Position="Left"/>
+                    </oxy:Plot.Axes>
+                    <oxy:Plot.Series>
+                        <oxy:LineSeries ItemsSource="{Binding HumidityData}"/>
+                    </oxy:Plot.Series>
+                </oxy:Plot>
+            </Border>
+
+        </StackPanel>
+
+        
+    </Grid>
+</Grid>

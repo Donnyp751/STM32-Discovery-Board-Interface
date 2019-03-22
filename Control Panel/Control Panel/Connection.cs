@@ -11,6 +11,14 @@ using System.Timers;
 
 namespace Control_Panel
 {
+    class MessageEventArgs : EventArgs
+    {
+        public string Message;
+        public MessageEventArgs(string message)
+        {
+            Message = message;
+        }
+    }
     class Connection : INotifyPropertyChanged
     {
         private Timer updateTimer;
@@ -27,6 +35,10 @@ namespace Control_Panel
         private ObservableCollection<string> consoleOutput;
         public event PropertyChangedEventHandler PropertyChanged;
         private SerialPort serialPort;
+        public delegate void NewSerialMessage(object sender, MessageEventArgs args);
+
+        public event NewSerialMessage OnSerialMessageReceived;
+        
 
         public bool IsOpen;
         public string ConnectionStatus
@@ -180,6 +192,7 @@ namespace Control_Panel
             try
             {
                 message = serialPort.ReadLine();
+                
             }
             catch (TimeoutException timeoutException)
             {
@@ -194,6 +207,10 @@ namespace Control_Panel
             if (!string.IsNullOrEmpty(message))
             {
                 ConsoleOutput = message;
+                if (OnSerialMessageReceived != null)
+                {
+                    OnSerialMessageReceived(this, new MessageEventArgs(message));//Invoke event that a new message was received
+                }
                 //NotifyPropertyChanged("ConsoleOutput");
             }
                 
