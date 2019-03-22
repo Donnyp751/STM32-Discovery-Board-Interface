@@ -83,14 +83,23 @@ namespace Control_Panel
 
         }
 
-        public ObservableCollection<string> ConsoleOutput
+        public string ConsoleOutput
         {
-            get => consoleOutput;
+            get
+            {
+                string output = "";
+                foreach (var line in consoleOutput)
+                {
+                    output += line.Replace('\t', '\n');
+                }
+
+                return output;
+            }
             set
             {
                 if (value != null)
                 {
-                    consoleOutput = value;
+                    consoleOutput.Add(value);
                     NotifyPropertyChanged();
                 }
             }
@@ -106,6 +115,7 @@ namespace Control_Panel
             updateTimer.Interval = 50;
             updateTimer.AutoReset = true;
             updateTimer.Elapsed += TimedUpdate;
+            updateTimer.Start();
 
             _ConnectionStatus = connectionStatusEnum.Disconnected;
             updateComPorts();
@@ -120,18 +130,7 @@ namespace Control_Panel
             if (serialPort.IsOpen)
             {
                 _ConnectionStatus = connectionStatusEnum.Connected;
-                string message = "";
-                try
-                {
-                    message = serialPort.ReadLine();
-                }
-                catch
-                {
 
-                }
-
-                if (!string.IsNullOrEmpty(message))
-                    ConsoleOutput?.Add(message);
             }
             else
             {
@@ -150,10 +149,15 @@ namespace Control_Panel
             {
                 serialPort.BaudRate = baud;
                 serialPort.PortName = comPort;
+                serialPort.ReadTimeout = 500;
+                serialPort.StopBits = StopBits.One;
+                serialPort.Parity = Parity.None;
+                serialPort.DataBits = 8;
+                serialPort.DataReceived += SerialPort_DataReceived;
                 try
                 {
                     serialPort.Open();
-                    updateTimer.Start();
+                    
                 }
                 catch
                 {
@@ -166,11 +170,37 @@ namespace Control_Panel
             return serialPort.IsOpen;
         }
 
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            string message = "";
+            try
+            {
+                message = serialPort.ReadLine();
+            }
+            catch (TimeoutException timeoutException)
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+
+
+            if (!string.IsNullOrEmpty(message))
+            {
+                ConsoleOutput = message;
+                //NotifyPropertyChanged("ConsoleOutput");
+            }
+                
+
+        }
+
         //Disconnect from the serial device
         public void Disconnect()
         {
             serialPort.Close();
-            updateTimer.Stop();
+            //updateTimer.Stop();
             _ConnectionStatus = connectionStatusEnum.Disconnected;
         }
 
@@ -188,10 +218,6 @@ namespace Control_Panel
             return cmd.Length;
         }
 
-        public string Read()
-        {
-            return serialPort.ReadLine();
-        }
         public string Read(int timeout)
         {
             if(serialPort.ReadTimeout != timeout)

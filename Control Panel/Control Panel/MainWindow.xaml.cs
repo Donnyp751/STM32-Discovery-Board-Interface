@@ -27,7 +27,7 @@ namespace Control_Panel
             InitializeComponent();
             connection = new Connection();
 
-            ConnectionTab.DataContext = connection;
+            MainGrid.DataContext = connection;
             //ConnectionStatusTextBlock.DataContext = connection;
            
         }

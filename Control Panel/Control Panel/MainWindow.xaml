@@ -55,7 +55,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    <Grid>
+    <Grid Name="MainGrid">
 
         <TabControl Background="#FF7E7E7E" BorderBrush="#FF8F0101"  BorderThickness="5">
             <TabItem x:Name="ConnectionTab" Header="Connection">
@@ -70,7 +70,7 @@
 
                     <Border HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Width="350" Height="120" BorderBrush="#FF8F0101" BorderThickness="5" Grid.ColumnSpan="2">
                         <TextBlock TextWrapping="WrapWithOverflow" FontSize="15" Margin="5">
-                            This is the control panel for the STM32 discovery board USB Data logger. With this application we can connect
+                            This is the control panel for the STM32 discovery board USB Data logger. With this application we can connect gather data from the onboard sensors to display.
                         </TextBlock>
                     </Border>
 
@@ -85,7 +85,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock HorizontalAlignment="Center" FontSize="25" Margin="45,0,104,0" Width="126" Grid.Column="1" Text=" Console"/>
                     <Border BorderBrush="#FF8F0101" Margin="10,0,0,10" BorderThickness="5" Height="285" Width="250" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
-                        <TextBox Text="This is where the console feedback will be placed" Margin="5"  VerticalScrollBarVisibility="Auto" IsReadOnly="True" Name="ConsoleTb" TextWrapping="WrapWithOverflow" Background="#FFC5C5C5">
+                        <TextBox Text="{Binding ConsoleOutput}" Margin="5"  VerticalScrollBarVisibility="Auto" IsReadOnly="True" Name="ConsoleTb" TextWrapping="WrapWithOverflow" Background="#FFC5C5C5">
 
                         </TextBox>
                     </Border>
