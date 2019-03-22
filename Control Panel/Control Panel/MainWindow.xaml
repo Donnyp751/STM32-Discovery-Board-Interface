@@ -108,7 +108,7 @@
 
             </TabItem>
             <TabItem Header="Sensors">
-                <local:SensorDataDisplayGrid x:Name="SensorDataDisplayGrid"></local:SensorDataDisplayGrid>
+                <local:SensorDataDisplayGrid x:Name="SensorDataDisplayGrid" ></local:SensorDataDisplayGrid>
                
             </TabItem>
         </TabControl>
