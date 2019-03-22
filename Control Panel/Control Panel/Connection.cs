@@ -121,6 +121,10 @@ namespace Control_Panel
             updateComPorts();
         }
 
+        public string GetLatestMessage()
+        {
+            return consoleOutput.Last();
+        }
         private void TimedUpdate(object sender, ElapsedEventArgs e)
         {
             if (serialPort == null) return;

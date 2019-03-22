@@ -29,9 +29,14 @@ namespace Control_Panel
 
             MainGrid.DataContext = connection;
             //ConnectionStatusTextBlock.DataContext = connection;
-           
+            ConsoleTb.TextChanged += ConsoleOutput_TextChanged;
         }
-        
+
+        private void ConsoleOutput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ConsoleTb.ScrollToEnd();
+        }
+
         private void ConnectBtnClick(object sender, RoutedEventArgs e)
         {
             string comPort = ComPortsComboBox?.SelectionBoxItem.ToString();
