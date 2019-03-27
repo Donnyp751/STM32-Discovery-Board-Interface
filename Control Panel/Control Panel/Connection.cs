@@ -6,8 +6,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.IO.Ports;
+using System.Threading;
 using System.Timers;
+using System.Windows.Media.Animation;
+using Timer = System.Timers.Timer;
 
 namespace Control_Panel
 {
@@ -36,6 +40,8 @@ namespace Control_Panel
         public event PropertyChangedEventHandler PropertyChanged;
         private SerialPort serialPort;
         public delegate void NewSerialMessage(object sender, MessageEventArgs args);
+        string output = "";
+        private bool ConsoleConnectionLock = false;
 
         public event NewSerialMessage OnSerialMessageReceived;
         
@@ -99,19 +105,36 @@ namespace Control_Panel
         {
             get
             {
-                string output = "";
+                while (ConsoleConnectionLock)
+                {
+                    Thread.Sleep(10);
+                    //spin till unlocked
+                }
+
+                ConsoleConnectionLock = true;
                 foreach (var line in consoleOutput)
                 {
                     output += line.Replace('\t', '\n');
-                }
 
+                }
+                consoleOutput.Clear();
+                ConsoleConnectionLock = false;
                 return output;
             }
             set
             {
                 if (value != null)
                 {
+                    while (ConsoleConnectionLock)
+                    {
+                        Thread.Sleep(10);
+                        //spin till unlocked
+                    }
+                    ConsoleConnectionLock = true;
+
                     consoleOutput.Add(value);
+                    ConsoleConnectionLock = false;
+
                     NotifyPropertyChanged();
                 }
             }
