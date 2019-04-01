@@ -173,9 +173,17 @@ namespace Control_Panel
 
         private void Connection_OnSerialMessageReceived(object sender, MessageEventArgs args)
         {
-            parseTempAndHumid(args.Message, out float temp, out float humid);
-            latestTemperatureReading = temp;
-            latestHumidityReading = humid;
+            try
+            {
+                parseTempAndHumid(args.Message, out float temp, out float humid);
+                latestTemperatureReading = temp;
+                latestHumidityReading = humid;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
         private void ConsoleOutput_TextChanged(object sender, TextChangedEventArgs e)
