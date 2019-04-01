@@ -154,7 +154,7 @@ namespace Control_Panel
             updateTimer.Start();
 
             _ConnectionStatus = connectionStatusEnum.Disconnected;
-            updateComPorts();
+            UpdateComPorts();
         }
 
         public string GetLatestMessage()
@@ -272,7 +272,7 @@ namespace Control_Panel
         }
 
         //This will refresh the com ports for the drop down.
-        private void updateComPorts()
+        public void UpdateComPorts()
         {
             ComPorts = new ObservableCollection<string>(SerialPort.GetPortNames());
         }

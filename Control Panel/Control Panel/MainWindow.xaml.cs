@@ -222,6 +222,12 @@ namespace Control_Panel
                 Disconnect();
             }
         }
+
+        //Update the com ports before showing them
+        private void ComPortsComboBox_OnDropDownOpened(object sender, EventArgs e)
+        {
+            connection.UpdateComPorts();
+        }
     }
 
 }

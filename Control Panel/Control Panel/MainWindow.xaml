@@ -62,7 +62,7 @@
             <Grid>
                 <Border HorizontalAlignment="Center" VerticalAlignment="Top" Width="484" Height="48" BorderBrush="#FF8F0101" BorderThickness="5" Grid.ColumnSpan="2">
                     <StackPanel Orientation="Horizontal" Background="#FF7E7E7E" >
-                        <ComboBox ToolTip="COM ports currently available on your machine" Name="ComPortsComboBox" ItemsSource="{Binding ComPorts}" VerticalAlignment="Center" Margin="10,0,10,0" Width="120" Height="30"/>
+                        <ComboBox DropDownOpened="ComPortsComboBox_OnDropDownOpened" ToolTip="COM ports currently available on your machine" Name="ComPortsComboBox" ItemsSource="{Binding ComPorts}" VerticalAlignment="Center" Margin="10,0,10,0" Width="120" Height="30"/>
                         <Button ToolTip="This button will connect or disconnect you from the selected COM port" Name="ConnectButton" Width="100" Height="30" Margin="0,0,20,0"  Content="Connect" Click="ConnectBtnClick"></Button>
                         <TextBlock x:Name="ConnectionStatusTextBlock" FontSize="14" Text="{Binding ConnectionStatus}" VerticalAlignment="Center" HorizontalAlignment="Right" Width="108" Margin="100,10,0,10"/>
                     </StackPanel>
@@ -121,7 +121,7 @@
                             <Border BorderBrush="#FF8F0101" Margin="1" Width="200"  BorderThickness="5" >
                                 <StackPanel>
                                     <TextBlock HorizontalAlignment="Center" Margin="5" FontSize="18">Load data from disk</TextBlock>
-                                    <Button HorizontalAlignment="Center" Width="80" Margin="10"  Height="40" Click="loadFromStorage">Load</Button>
+                                    <Button HorizontalAlignment="Center" Width="80" Margin="10"  Height="40" Click="loadFromStorage">Open</Button>
                                 </StackPanel>
                             </Border>
                         </Grid>
@@ -144,18 +144,49 @@
                         </Grid.ColumnDefinitions>
 
 
-                        <Border HorizontalAlignment="Center" VerticalAlignment="Top" Width="450" Height="99" Margin="15,10,14.333,0" BorderBrush="#FF8F0101" BorderThickness="5"  Grid.ColumnSpan="2">
-                            <TextBlock TextWrapping="WrapWithOverflow" FontSize="15"  HorizontalAlignment="Center"  Margin="5">
+                        <Border HorizontalAlignment="Center" VerticalAlignment="Top" Width="450" Height="75" Margin="10,10,10,0" BorderBrush="#FF8F0101" BorderThickness="5"  Grid.ColumnSpan="2">
+                            <TextBlock TextWrapping="WrapWithOverflow" FontSize="14"  HorizontalAlignment="Center"  Margin="5" Width="430">
                                 This is the control panel for the STM32 discovery board USB Data logger. With this application we can connect collect data from the onboard temperature and humidity sensors to display or save.
                             </TextBlock>
                         </Border>
 
-                        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Height="90" Margin="10" BorderBrush="#FF8F0101" BorderThickness="5"  Grid.ColumnSpan="2">
-                            <TextBlock TextWrapping="WrapWithOverflow" FontSize="15"  HorizontalAlignment="Center"  Margin="5">
-                                This is the control panel for the STM32 discovery board USB Data logger. With this application we can connect gather data from the onboard sensors display or save.
-                            </TextBlock>
+                        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="450" Height="130" Margin="10,100,10,244" BorderBrush="#FF8F0101" BorderThickness="5"  Grid.ColumnSpan="2">
+                            <StackPanel Margin="1">
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="19" FontStyle="Italic"  HorizontalAlignment="Center"  Margin="2">
+                                    How to view live data from device
+                                </TextBlock>
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="15"  HorizontalAlignment="Left"  Margin="2">
+                                    1. Select COM port the discovery board is connected to, and click "Connect"
+                                </TextBlock>
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="15"  HorizontalAlignment="Left"  Margin="2">
+                                    2. Go to the "Sensors" tab for live plotting of the temperature and humidity data from the device.
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="450" Height="134" Margin="10,0,10,99" BorderBrush="#FF8F0101" BorderThickness="5"  Grid.ColumnSpan="2">
+                            <StackPanel Margin="1">
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="19" FontStyle="Italic"  HorizontalAlignment="Center"  Margin="2">
+                                    How to save data
+                                </TextBlock>
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="15"  HorizontalAlignment="Left"  Margin="2"><Run Text="1. Follow steps above to get connected and visualizing the live data."/></TextBlock>
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="15"  HorizontalAlignment="Left"  Margin="2">
+                                    2. To save the data that is plotted, navigate to the "Data" tab.
+                                </TextBlock>
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="15"  HorizontalAlignment="Left"  Margin="2">
+                                    3. Click "Save", and select the location and name of the data file.
+                                </TextBlock>
+
+                            </StackPanel>
                         </Border>
 
+                        <Border HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="450" Height="80" Margin="10,0,10,10" BorderBrush="#FF8F0101" BorderThickness="5"  Grid.ColumnSpan="2">
+                            <StackPanel Margin="1">
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="19" FontStyle="Italic"  HorizontalAlignment="Center"  Margin="0"><Run Text="How to load previously recorded data"/></TextBlock>
+                                <TextBlock TextWrapping="WrapWithOverflow" FontSize="15"  HorizontalAlignment="Left"  Margin="1"><Run Text="1. Navigate to the &quot;Data&quot; tab, click &quot;Open&quot;, and select the data file."/></TextBlock>
+
+
+                            </StackPanel>
+                        </Border>
                     </Grid>
                 </TabItem>
             </TabControl>
