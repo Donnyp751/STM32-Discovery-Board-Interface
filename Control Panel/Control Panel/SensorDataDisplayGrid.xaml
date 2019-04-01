@@ -10,7 +10,7 @@
     <Grid>
         <StackPanel Name="StackPanel">
             <!--<TextBlock Margin="2" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center">Temperature Graph</TextBlock>-->
-            <Border  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="2" Width="360" Height=" 155" BorderBrush="#FF8F0101" BorderThickness="5">
+            <Border  VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="3" Width="450" Height=" 230" BorderBrush="#FF8F0101" BorderThickness="5">
                 <oxy:Plot Background="#FFC5C5C5" Name="TemperaturePlot" >
                     <oxy:Plot.Axes>
                         <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
@@ -23,7 +23,7 @@
             </Border>
 
             <!--<TextBlock Margin="2" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center">Humidity Graph</TextBlock>-->
-            <Border VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="2" Width="360" Height=" 155" BorderBrush="#FF8F0101" BorderThickness="5">
+            <Border VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="3" Width="450" Height=" 230" BorderBrush="#FF8F0101" BorderThickness="5">
                 <oxy:Plot Background="#FFC5C5C5" Name="HumidityPlot" >
                     <oxy:Plot.Axes>
                         <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
