@@ -56,7 +56,7 @@
         </Style>
     </Window.Resources>
     <Grid Name="MainGrid">
-        <TextBlock FontStyle="Italic" Margin="265,52,0,0" FontSize="15"><Run Text="Donald Posterick DCT SENG 2019"/></TextBlock>
+        <TextBlock FontStyle="Italic" Margin="265,50,0,0" FontSize="15"><Run Text="Donald Posterick DCT SENG 2019"/></TextBlock>
         <StackPanel>
 
             <Grid>
